@@ -22,12 +22,30 @@ public class Program
         
 
         Library library = new();
-        library.AddUsers(users);
-        // library.ShowUsers();
 
-        foreach(Book book in books)
+        // Add users to the library
+        library.AddUsers(users);
+        
+        // Add books to the library
+        foreach(Book b in books)
         {
-            library.AddBook(book);
+            library.AddBook(b);
         }
+
+        library.LibraryStatus();
+
+        User? user = users.FirstOrDefault(u => u.UserID == "u01");
+        Book? book = books.FirstOrDefault(b => b.BookID == "b01");
+
+        if (user != null && book != null)
+        {
+            library.BorrowBookByID(user, book);
+        }
+        else
+        {
+            Console.WriteLine("Usuario o libro no encontrado.");
+        }
+        library.LibraryStatus();
+
     }
 }
