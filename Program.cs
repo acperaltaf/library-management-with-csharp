@@ -32,14 +32,21 @@ public class Program
             library.AddBook(b);
         }
 
-        library.LibraryStatus();
+        // library.LibraryStatus();
 
-        User? user = users.FirstOrDefault(u => u.UserID == "u01");
-        Book? book = books.FirstOrDefault(b => b.BookID == "b01");
+        User? user1 = users.FirstOrDefault(u => u.Name == "Adres Peralta");
+        Book? book1 = books.FirstOrDefault(b => b.Title == "Cien años de soledad");
+        Book? book2 = books.FirstOrDefault(b => b.Title == "The Game of Thrones");
 
-        if (user != null && book != null)
+        User? user2 = users.FirstOrDefault(u => u.Name == "Zaida Peralta");
+        Book? book3 = books.FirstOrDefault(b => b.Title == "Hary Potter");
+
+
+        if (user1 != null && user2 != null && book1 != null && book2 != null && book3 != null)
         {
-            library.BorrowBookByID(user, book);
+            library.BorrowBook(user1, book1);
+            library.BorrowBook(user1, book2);
+            library.BorrowBook(user2, book3);
         }
         else
         {

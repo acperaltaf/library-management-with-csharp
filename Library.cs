@@ -3,7 +3,7 @@ public class Library
     private List<Book> Books {get; set;} = new();
     private List<User> Users {get; set;} = new();
 
-    // In this order: <UserID, List<BookID>>
+    // In this order: <Name, List<Title>>
     private Dictionary<string, List<string>> BorrowedBooks = new();
 
     public void ShowAvailableBooks()
@@ -11,6 +11,17 @@ public class Library
         foreach (Book book in Books)
         {
             if (book.IsBorrowed == false)
+            {
+                Console.WriteLine(book.ToString());
+            }
+        }
+    }
+
+    public void ShowBorrowedBooks() 
+    {
+        foreach (Book book in Books)
+        {
+            if (book.IsBorrowed)
             {
                 Console.WriteLine(book.ToString());
             }
@@ -30,7 +41,7 @@ public class Library
     public void AddBook(Book book) => Books.Add(book);
     public void RemoveBook(Book book) => Books.Remove(book);
 
-    public void BorrowBookByID(User user, Book book)
+    public void BorrowBook(User user, Book book)
     {
         // Verify that the book exists in the library
         if (!Books.Contains(book))
@@ -54,11 +65,11 @@ public class Library
         }
 
         // Lend book
-        if (!BorrowedBooks.ContainsKey(user.UserID))
+        if (!BorrowedBooks.ContainsKey(user.Name))
         {
-            BorrowedBooks[user.UserID] = new List<string>();
+            BorrowedBooks[user.Name] = new List<string>();
         }
-        BorrowedBooks[user.UserID].Add(book.BookID);
+        BorrowedBooks[user.Name].Add(book.Title);
         book.IsBorrowed = true;
         Console.WriteLine($"{user.Name} borrowed '{book.Title}'.");
     }
@@ -67,26 +78,26 @@ public class Library
     public void ReturnBook(User user, Book book)
     {
         // Verify that the user has borrowed books
-        if (!BorrowedBooks.ContainsKey(user.UserID))
+        if (!BorrowedBooks.ContainsKey(user.Name))
         {
             Console.WriteLine($"{user.Name} doesn't have any borrowed books.");
             return;
         }
 
         // Verify that the user has this specific book
-        if (!BorrowedBooks[user.UserID].Contains(book.BookID))
+        if (!BorrowedBooks[user.Name].Contains(book.Title))
         {
             Console.WriteLine($"{user.Name} doesn't have '{book.Title}' borrowed.");
             return;
         }
 
         // Return the book
-        BorrowedBooks[user.UserID].Remove(book.BookID);
+        BorrowedBooks[user.Name].Remove(book.Title);
         
         // If the user has no more books, remove their dictionary entry.
-        if (BorrowedBooks[user.UserID].Count == 0)
+        if (BorrowedBooks[user.Name].Count == 0)
         {
-            BorrowedBooks.Remove(user.UserID);
+            BorrowedBooks.Remove(user.Name);
         }
         
         book.IsBorrowed = false;
@@ -100,6 +111,9 @@ public class Library
 
        Console.WriteLine("\tLibrary users: ");
        ShowUsers();
+
+        Console.WriteLine("\t Borrowed books: ");
+        ShowBorrowedBooks();
     }
 
 }
